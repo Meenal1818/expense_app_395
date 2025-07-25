@@ -1,23 +1,37 @@
+
+
 import 'dart:async';
 
-import 'package:expense_app/on_boarding_page/sign_up_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../intro_page.dart';
+import '../app_constants.dart';
+import '../utils/app_routes.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class SplashPage extends StatefulWidget {
+  const SplashPage({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration (seconds: 3), (){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignUpPage(),));
+    Timer(Duration (seconds: 3), ()async{
+      String nextPageName = AppRoutes.login;
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String userId = prefs.getString(AppConstants.prefUserIdKey) ?? "";
+
+      if(userId.isNotEmpty){
+        nextPageName = AppRoutes.home;
+      }
+
+
+      Navigator.pushReplacementNamed(context, nextPageName);
     });
   }
 
@@ -35,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 Image.asset("assets/app_image/logo.png"),
                 SizedBox(width: 15,),
                 Text('Monety',style: TextStyle(
-                  color: Colors.black,fontSize: 30,fontWeight: FontWeight.bold
+                    color: Colors.black,fontSize: 30,fontWeight: FontWeight.bold
                 ),)
               ],
             ),

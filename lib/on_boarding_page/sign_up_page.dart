@@ -1,8 +1,11 @@
-import 'package:expense_app/bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'login_page.dart';
+import '../bloc/user_bloc.dart';
+import '../bloc/user_event.dart';
+import '../bloc/user_state.dart';
+import '../models/user_model.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -12,10 +15,15 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+    TextEditingController nameController = TextEditingController();
+    TextEditingController mobNoController = TextEditingController();
+    TextEditingController genderController = TextEditingController();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -35,20 +43,27 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
 
             SizedBox(height: 50),
-            Container(
+            SizedBox(
               width: 350,
               height: 80,
               child: TextField(
                 keyboardType: TextInputType.text,
                 controller: emailController,
                 decoration: InputDecoration(
-                  labelText: 'UserName',
+                  labelText: 'Email',
                   labelStyle: TextStyle(color: Colors.black54, fontSize: 15),
                   filled: true,
                   fillColor: Colors.grey.shade100,
-                  enabled: true,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey), // same as enabled
                     borderRadius: BorderRadius.circular(10),
                   ),
                   suffixIcon: Icon(
@@ -60,7 +75,101 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
 
-            Container(
+            SizedBox(
+              width: 350,
+              height: 80,
+              child: TextField(
+                keyboardType: TextInputType.text,
+                controller: nameController,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  labelStyle: TextStyle(color: Colors.black54, fontSize: 15),
+                  filled: true,
+                  fillColor: Colors.grey.shade100,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey), // same as enabled
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  suffixIcon: Icon(
+                    Icons.edit,
+                    size: 20,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 350,
+              height: 80,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                controller: mobNoController,
+                decoration: InputDecoration(
+                  labelText: 'Mobile number',
+                  labelStyle: TextStyle(color: Colors.black54, fontSize: 15),
+                  filled: true,
+                  fillColor: Colors.grey.shade100,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey), // same as enabled
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  suffixIcon: Icon(
+                    CupertinoIcons.phone,
+                    size: 20,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 350,
+              height: 80,
+              child: TextField(
+                keyboardType: TextInputType.text,
+                controller: genderController,
+                decoration: InputDecoration(
+                  labelText: 'Gender',
+                  labelStyle: TextStyle(color: Colors.black54, fontSize: 15),
+                  filled: true,
+                  fillColor: Colors.grey.shade100,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey), // same as enabled
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  suffixIcon: Icon(
+                    CupertinoIcons.person,
+                    size: 20,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+            ),
+
+            SizedBox(
               width: 350,
               height: 80,
               child: TextField(
@@ -72,9 +181,16 @@ class _SignUpPageState extends State<SignUpPage> {
                   labelStyle: TextStyle(color: Colors.black54, fontSize: 15),
                   filled: true,
                   fillColor: Colors.grey.shade100,
-                  enabled: true,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey), // same as enabled
                     borderRadius: BorderRadius.circular(10),
                   ),
                   suffixIcon: Icon(
@@ -87,35 +203,76 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
 
             SizedBox(height: 20),
-            Container(
+            SizedBox(
               width: 350,
               height: 50,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder:
-                          (context) => BottomBar(),
-                    ),
-                  );
-                  print('signup');
-                },
-                child: Text(
-                  'Sign Up',
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0XFF6D7ED2),
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
+              child: BlocConsumer<UserBloc, UserState>(
+                  listener: (_, state){
+
+                    if(state is UserLoadingState){
+                      isLoading = true;
+                    }
+
+                    if(state is UserSuccessState){
+                      isLoading = false;
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Successfully Registered"), backgroundColor: Colors.green,));
+                    }
+
+                    if(state is UserFailureState){
+                      isLoading = false;
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorMsg), backgroundColor: Colors.red,));
+                    }
+
+
+                  },
+                  builder: (context, state) {
+                    return ElevatedButton(
+                      onPressed: () {
+                        // Add your sign up logic here
+
+                        UserModel user = UserModel(
+                            name: nameController.text,
+                            email: emailController.text.trim(),
+                            pass: passwordController.text.trim(),
+                            mobNo: mobNoController.text.trim(),
+                            gender: genderController.text.trim(),
+                            createdAt: DateTime.now().millisecondsSinceEpoch.toString());
+
+                        context.read<UserBloc>().add(RegisterUserEvent(user: user));
+
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0XFF6D7ED2),
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: isLoading ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(color: Colors.white,),
+                          SizedBox(width: 10,),
+                          Text(
+                            'Signing Up...',
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ) : Text(
+                        'Sign Up',
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  }
               ),
             ),
 
@@ -155,7 +312,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ],
             ),
 
-            SizedBox(height: 130),
+            SizedBox(height: 20),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -167,10 +324,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
+                    Navigator.pop(context);
                   },
                   child: Text(
                     'Log In',

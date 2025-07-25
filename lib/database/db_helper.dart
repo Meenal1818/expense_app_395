@@ -1,13 +1,18 @@
 import 'dart:io';
 
+import 'package:expense_app/app_constants.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/expense_model.dart';
 import '../models/user_model.dart';
 
 class DBHelper {
+  DBHelper._();
+
+  static DBHelper getInstance() => DBHelper._();
   Database? db;
 
   ///user
@@ -89,11 +94,55 @@ class DBHelper {
   }
 
   ///auth
-  void loginUser({required String email, required String pass}) {}
+  Future<int> loginUser({required String email, required String pass}) async {
+    var db = await initDB();
 
-  void registerUser({required UserModel user}) {}
+    List<Map<String, dynamic>> allUsers = await db.query(
+      TABLE_USER,
+      where: "$COLUMN_USER_EMAIL = ?",
+      whereArgs: [email],
+    );
 
-  void ifEmailExists(String email) {}
+    if(allUsers.isNotEmpty){
+
+      List<Map<String, dynamic>> allData = await db.query(
+        TABLE_USER,
+        where: "$COLUMN_USER_EMAIL = ? AND $COLUMN_USER_PASS = ?",
+        whereArgs: [email, pass],
+      );
+
+      if(allData.isNotEmpty){
+        SharedPreferences prefs =await SharedPreferences.getInstance();
+        prefs.setString(AppConstants.prefUserIdKey, allData[0][COLUMN_USER_ID].toString());
+        return 1; // user authenticated
+      } else {
+        return 3; // incorrect password
+      }
+
+    } else {
+      return 2; // email is invalid
+    }
+  }
+
+  Future<bool> registerUser({required UserModel user}) async {
+    var db = await initDB();
+
+    int rowsEffected = await db.insert(TABLE_USER, user.toMap());
+
+    return rowsEffected > 0;
+  }
+
+  Future<bool> ifEmailExists(String email) async {
+    var db = await initDB();
+
+    List<Map<String, dynamic>> allData = await db.query(
+      TABLE_USER,
+      where: "$COLUMN_USER_EMAIL = ?",
+      whereArgs: [email],
+    );
+
+    return allData.isNotEmpty;
+  }
 
   ///expense
   Future<bool> addExpense({required ExpenseModel expense}) async {

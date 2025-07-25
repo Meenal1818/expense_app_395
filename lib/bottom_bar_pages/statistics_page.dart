@@ -362,7 +362,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
               ),
 
               SizedBox(
-                height: 500,
+                height: 300,
                 child: ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: 2,

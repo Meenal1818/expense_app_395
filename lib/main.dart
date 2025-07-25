@@ -1,9 +1,19 @@
+import 'package:expense_app/bloc/user_bloc.dart';
+import 'package:expense_app/database/db_helper.dart';
+import 'package:expense_app/database/repo/user_repo.dart';
 import 'package:expense_app/intro_page.dart';
 import 'package:expense_app/on_boarding_page/splash_screen.dart';
+import 'package:expense_app/utils/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiBlocProvider(providers: [
+      BlocProvider(create: (context) => UserBloc(userRepo: UserRepository(dbHelper: DBHelper.getInstance())),)
+    ],
+        child: const MyApp())
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,8 +27,12 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+
       ),
-      home: SplashScreen()
+        initialRoute: AppRoutes.splash,
+        routes: AppRoutes.getRoutes(),
+
+      home: SplashPage()
     );
   }
 }
