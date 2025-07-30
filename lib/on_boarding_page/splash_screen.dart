@@ -27,7 +27,7 @@ class _SplashPageState extends State<SplashPage> {
       String userId = prefs.getString(AppConstants.prefUserIdKey) ?? "";
 
       if(userId.isNotEmpty){
-        nextPageName = AppRoutes.home;
+        nextPageName = AppRoutes.bottomBar;
       }
 
 

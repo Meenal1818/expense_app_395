@@ -1,5 +1,6 @@
-import 'package:expense_app/bottom_bar_pages/home_page.dart';
-import 'package:expense_app/bottom_bar_pages/statistics_page.dart';
+
+import 'package:expense_app/ui/bottom_bar_pages/home_page.dart';
+import 'package:expense_app/ui/bottom_bar_pages/statistics_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

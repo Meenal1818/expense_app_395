@@ -1,3 +1,5 @@
+import 'package:expense_app/ui/settings/logout.dart';
+import 'package:expense_app/utils/app_routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -44,9 +46,10 @@ class _HomePageState extends State<HomePage> {
                         icon: Icon(
                           CupertinoIcons.search,
                           color: Colors.black,
-                          size: 30,
+                          size: 25,
                         ),
                       ),
+
                     ],
                   ),
 
