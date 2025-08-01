@@ -163,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                     if(state is UserSuccessState){
                       isLoading=false;
                       Navigator.pushReplacementNamed(context, AppRoutes.bottomBar);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Login Successfully!!'),backgroundColor: Colors.green,));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Logged in Successfully!!'),backgroundColor: Colors.green,));
                     }
                     if(state is UserFailureState){
                       isLoading=false;
@@ -175,10 +175,14 @@ class _LoginPageState extends State<LoginPage> {
                   builder: (context,state){
                     return ElevatedButton(
                       onPressed: () {
-                        isLogin = true;
-                        context.read<UserBloc>().add(LoginUserEvent(
-                            email: emailController.text.trim() ,
-                            password: passwordController.text.trim()));
+                        if(formKey.currentState!.validate()){
+                          isLogin = true;
+                          context.read<UserBloc>().add(
+                            LoginUserEvent(email: emailController.text.trim(),
+                                password: passwordController.text.trim()),
+                          );
+                        }
+
 
                       },
                       style: ElevatedButton.styleFrom(
