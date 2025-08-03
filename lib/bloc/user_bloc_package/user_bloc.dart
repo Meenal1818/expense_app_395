@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:expense_app/bloc/user_event.dart';
-import 'package:expense_app/bloc/user_state.dart';
+import 'package:expense_app/bloc/user_bloc_package/user_event.dart';
+import 'package:expense_app/bloc/user_bloc_package/user_state.dart';
 import 'package:expense_app/database/repo/user_repo.dart';
 
 class UserBloc extends Bloc<UserEvent,UserState>{

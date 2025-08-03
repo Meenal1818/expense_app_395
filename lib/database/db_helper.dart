@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:expense_app/app_constants.dart';
@@ -78,20 +79,22 @@ class DBHelper {
   Future<Database> openDB() async {
     Directory dir = await getApplicationDocumentsDirectory();
     String dbPath = join(dir.path, "expenseDB.db");
-    return openDatabase(
+
+    return await openDatabase(
       dbPath,
       version: 1,
       onCreate: (db, version) {
         db.execute(
-          "create table $TABLE_USER($COLUMN_USER_ID integer primary key autoincrement,$COLUMN_USER_NAME text,$COLUMN_USER_EMAIL text,$COLUMN_USER_GENDER text,$COLUMN_USER_MOB_NO text,$COLUMN_USER_PASS text,$COLUMN_USER_CREATED_AT text)",
+          "create table $TABLE_USER ( $COLUMN_USER_ID integer primary key autoincrement, $COLUMN_USER_NAME text, $COLUMN_USER_EMAIL text, $COLUMN_USER_PASS text, $COLUMN_USER_MOB_NO text, $COLUMN_USER_GENDER text, $COLUMN_USER_CREATED_AT text)",
         );
 
         db.execute(
-          "create table $TABLE_EXPENSE($COLUMN_EXPENSE_ID integer primary key autoincrement ,$COLUMN_EXPENSE_TITLE text,$COLUMN_EXPENSE_DESC text,$COLUMN_EXPENSE_AMOUNT real,$COLUMN_EXPENSE_BALANCE real,$COLUMN_EXPENSE_CREATED_AT text,$COLUMN_EXPENSE_CATEGORY_ID integer,$COLUMN_EXPENSE_TYPE integer)",
+          "create table $TABLE_EXPENSE ( $COLUMN_EXPENSE_ID integer primary key autoincrement, $COLUMN_USER_ID integer, $COLUMN_EXPENSE_TITLE text, $COLUMN_EXPENSE_DESC text, $COLUMN_EXPENSE_AMOUNT real, $COLUMN_EXPENSE_BALANCE real, $COLUMN_EXPENSE_CREATED_AT text, $COLUMN_EXPENSE_CATEGORY_ID integer, $COLUMN_EXPENSE_TYPE integer)",
         );
       },
     );
   }
+
 
   ///auth
   Future<int> loginUser({required String email, required String pass}) async {
@@ -147,11 +150,28 @@ class DBHelper {
   ///expense
   Future<bool> addExpense({required ExpenseModel expense}) async {
     final db = await initDB();
+    SharedPreferences prefs =await SharedPreferences.getInstance();
+    int userId = int.parse(prefs.getString(AppConstants.prefUserIdKey) ?? '0');
+    expense.uid=userId;
     int rowsEffected = await db.insert(TABLE_EXPENSE, expense.toMap());
     return rowsEffected > 0;
   }
 
-  void fetchAllExpenses() {}
+
+  Future<List<ExpenseModel>> fetchAllExpenses({int? type}) async{
+    print(type);
+    var db = await initDB();
+
+    List<Map<String, dynamic>> allData =  type!=null ? await db.query(TABLE_EXPENSE, where: "$COLUMN_EXPENSE_TYPE = ?", whereArgs: ["$type"]) : await db.query(TABLE_EXPENSE);
+
+    List<ExpenseModel> allExp = [];
+
+    for(Map<String, dynamic> eachExp in allData){
+      allExp.add(ExpenseModel.fromMap(eachExp));
+    }
+
+    return allExp;
+  }
 
   Future<bool> updateExpense({
     required ExpenseModel expense,

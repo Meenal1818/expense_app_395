@@ -1,6 +1,6 @@
-import 'package:expense_app/bloc/user_bloc.dart';
-import 'package:expense_app/bloc/user_event.dart';
-import 'package:expense_app/bloc/user_state.dart';
+import 'package:expense_app/bloc/user_bloc_package/user_bloc.dart';
+import 'package:expense_app/bloc/user_bloc_package/user_event.dart';
+import 'package:expense_app/bloc/user_bloc_package/user_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

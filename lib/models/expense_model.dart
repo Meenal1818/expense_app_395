@@ -25,6 +25,8 @@ class ExpenseModel{
 
   factory ExpenseModel.fromMap(Map<String,dynamic>map){
     return ExpenseModel(
+      uid:  map[DBHelper.COLUMN_USER_ID],
+        eid:  map[DBHelper.COLUMN_EXPENSE_ID],
         title: map[DBHelper.COLUMN_EXPENSE_TITLE],
         desc: map[DBHelper.COLUMN_EXPENSE_DESC],
         amount: map[DBHelper.COLUMN_EXPENSE_AMOUNT],
@@ -36,6 +38,7 @@ class ExpenseModel{
   }
 
   Map<String,dynamic> toMap() => {
+    DBHelper.COLUMN_USER_ID: uid,
     DBHelper.COLUMN_EXPENSE_TITLE: title,
     DBHelper.COLUMN_EXPENSE_DESC : desc,
     DBHelper.COLUMN_EXPENSE_AMOUNT :amount,

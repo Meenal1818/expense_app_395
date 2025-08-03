@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/user_bloc.dart';
-import '../bloc/user_event.dart';
-import '../bloc/user_state.dart';
+import '../bloc/user_bloc_package/user_bloc.dart';
+import '../bloc/user_bloc_package/user_event.dart';
+import '../bloc/user_bloc_package/user_state.dart';
 import '../models/user_model.dart';
 import '../utils/ui_helper/signUpTextFieldStyle.dart';
 

@@ -1,6 +1,8 @@
 
+import 'package:expense_app/ui/bottom_bar_pages/add_expense_page.dart';
 import 'package:expense_app/ui/bottom_bar_pages/home_page.dart';
 import 'package:expense_app/ui/bottom_bar_pages/statistics_page.dart';
+import 'package:expense_app/utils/app_routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,16 +19,11 @@ class _BottomBarState extends State<BottomBar> {
   final List<Widget> _pages = [
     HomePage(),
     StatisticsPage(),
-    Center(child: Text('Add Page')),
+    Scaffold(),
     Center(child: Text('Notification Page')),
     Center(child: Text('Idea Page')),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +31,16 @@ class _BottomBarState extends State<BottomBar> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        onTap: (index) {
+          if(index==2){
+            Navigator.pushNamed(context, AppRoutes.addExpense);
+          } else {
+            _selectedIndex = index;
+            setState(() {
+
+            });
+          }
+        },
         selectedItemColor: Colors.red,
         unselectedItemColor: Colors.grey,
         items: [

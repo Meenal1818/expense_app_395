@@ -1,4 +1,5 @@
 import 'package:expense_app/bottom_bar.dart';
+import 'package:expense_app/ui/bottom_bar_pages/add_expense_page.dart';
 import 'package:expense_app/ui/settings/logout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
@@ -18,6 +19,7 @@ class AppRoutes{
   static const String bottomBar = '/bottomBar';
   static const String statistics = '/statistics';
   static const String logout = '/logout';
+  static const String addExpense = '/addExpense';
 
 
 
@@ -29,6 +31,7 @@ class AppRoutes{
     home:(context) => HomePage(),
     statistics:(context) => StatisticsPage(),
     logout:(context)=> Logout(),
+    addExpense:(context)=>AddExpensePage(),
   };
 
 }
